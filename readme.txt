@@ -38,7 +38,7 @@ Once you have set up all your settings, you should copy the plugin files along w
 Written by Matthew O'Riordan, <http://mattheworiordan.com>
 Feedback is welcome, please branch or comment as you wish.
 
-*Github* - <http://github.com/mattheworiordan/wp-plugin-dev-stage-environment>
+*Github* - <http://github.com/mattheworiordan/Wordpress-Plugin-Dev-and-Stage-Environment>
 
 *Home* - <http://mattheworiordan.com/projects/wp-plugins/dev-stage-environment>
 

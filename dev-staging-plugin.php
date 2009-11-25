@@ -1,12 +1,7 @@
 <?php
-/**
- * @package Dev_Stage_Environment
- * @author Matthew O'Riordan
- * @version 0.1
- */
 /*
 Plugin Name: Dev and Staging Environment
-Plugin URI: http://mattheworiordan.com
+Plugin URI: http://mattheworiordan.com/projects/wp-plugins/dev-staging-environment/
 Description: This plugin lets you run your WP site on a DEV or STAGING server without having to change the database connection strings in config files or the Site URL in the database.   It will rewrite all URLs to the local DEV URL if running off localhost, and allow you to specify the local database connection settings.
 Author: Matthew O'Riordan
 Version: 0.1
@@ -14,7 +9,7 @@ Author URI: http://mattheworiordan.com/
 */
 
 global $mo_install_pattern, $mo_install_wp_path;
-$mo_install_pattern = "/include\\s\\('wp-content\/plugins\/dev-stage-environment\/wp-config-include.php'\\);\\s/";
+$mo_install_pattern = "/include\\s\\('wp-content\/plugins\/dev-staging-environment\/wp-config-include.php'\\);\\s/";
 $mo_install_wp_path = "wp-config.php";
 
 function mo_devStageIncludeInstalled()
@@ -25,7 +20,7 @@ function mo_devStageIncludeInstalled()
 }
 
 // check whenever the plugin is shown that the wp-config file includes the necessary files to change the environment settings
-add_action('after_plugin_row_dev-stage-environment/dev-stage-plugin.php', 'mo_devStageInstallationCheck');
+add_action('after_plugin_row_dev-staging-environment/dev-staging-plugin.php', 'mo_devStageInstallationCheck');
 function mo_devStageInstallationCheck() 
 {
 	if (!mo_devStageIncludeInstalled()) { 
@@ -41,7 +36,7 @@ function mo_devStageInstallationCheck()
 function mo_devStagInstallationIncorrect() {
 	$message_head = "<div class='update-message' style='background-color:#FFEBE8; border:1px solid #FF6666; text-align:left;'>";
 	$top_message_head = "<div class='error' style='padding:3px; background-color:#FFEBE8; border:1px solid #FF6666; text-align:left;'>";
-	$message = "The Dev Stage Environment plugin is not installed correctly.  Please ensure the web server has read and write access to the /wp-config.php file and <a href=\"" . $_SERVER['PHP_SELF'] . "?install-devstage-plugin=true\">click here to reinstall the plugin</a></div>";
+	$message = "The Dev Staging Environment plugin is not installed correctly.  Please ensure the web server has read and write access to the /wp-config.php file and <a href=\"" . $_SERVER['PHP_SELF'] . "?install-devstaging-plugin=true\">click here to reinstall the plugin</a></div>";
 	echo '</tr><tr class="plugin-update-tr"><td colspan="5" class="plugin-update">' . $top_message_head . $message . $message_head . $message . '</td></tr>';
 }
 
@@ -56,9 +51,9 @@ function mo_devStageActivate()
 	if (!preg_match ($mo_install_pattern, $wpconfig)) {
 		$wpconfig = preg_replace ("/\\/\\*+\\s+http:\\/+wordpress.org\\/\\s+\\*+\\//", "/** http://wordpress.org/   **/
 
-// START: Dev Stage Environment Plugin
-include ('wp-content/plugins/dev-stage-environment/wp-config-include.php'); 
-// END: Dev Stage Environment Plugin", $wpconfig);
+// START: Dev Staging Environment Plugin
+include ('wp-content/plugins/dev-staging-environment/wp-config-include.php'); 
+// END: Dev Staging Environment Plugin", $wpconfig);
 		file_put_contents  ( ABSPATH.$mo_install_wp_path, $wpconfig );
 	}
 }
@@ -71,7 +66,7 @@ function mo_devStageDeactivate()
 	global $mo_install_wp_path;
 	$wpconfig = file_get_contents(ABSPATH.$mo_install_wp_path);
 	
-	$plugin_pattern = "/[\\r\\n]+\\/+ START: Dev Stage Environment Plugin[\\s\\S]+?\\/+ END: Dev Stage Environment Plugin/";
+	$plugin_pattern = "/[\\r\\n]+\\/+ START: Dev Staging Environment Plugin[\\s\\S]+?\\/+ END: Dev Staging Environment Plugin/";
 	
 	if (preg_match ($plugin_pattern, $wpconfig)) {
 		$wpconfig = preg_replace ($plugin_pattern, "", $wpconfig);
@@ -102,7 +97,7 @@ add_action('admin_menu', 'mo_devStageMenu');
 
 function mo_devStageMenu()
 {
-	add_options_page('Dev Stage Env, options page', 'Dev & Stage Environment', 9, basename(__FILE__), 'mo_devStageMenuOptions');
+	add_options_page('Dev Staging Env, options page', 'Dev & Staging Environment', 9, basename(__FILE__), 'mo_devStageMenuOptions');
 }
 
 if (MO_DEV_STAGE_ENVIRONMENT == 'DEV' || MO_DEV_STAGE_ENVIRONMENT == 'STAGE')
@@ -143,7 +138,7 @@ function mo_devStageMenuOptions()
 	<div class="wrap">
 	<h2>Development and Staging Environment Settings</h2>
 	
-	Please note that these settings are NOT stored in the database and all changes are stored in local PHP configuration files.  Therefore, all changes made to the configuration must be made on the Production server only, and replicated to the Dev and Staging servers.  Alternatively, if you wish to make changes on the Dev and or Staging servers, you can replicate the changes in the file /wp-content/plugins/dev-stage-environment/db-config.php.
+	Please note that these settings are NOT stored in the database and all changes are stored in local PHP configuration files.  Therefore, all changes made to the configuration must be made on the Production server only, and replicated to the Dev and Staging servers.  Alternatively, if you wish to make changes on the Dev and or Staging servers, you can replicate the changes in the file /wp-content/plugins/dev-staging-environment/db-config.php.
 	
 		<form method="post">
 			<?php wp_nonce_field('update-options'); ?>

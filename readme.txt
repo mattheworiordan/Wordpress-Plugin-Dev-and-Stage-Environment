@@ -1,22 +1,22 @@
-# Dev and Staging Environment Plugin #
-Contributors: Matthew O'Riordan
+=== Dev and Staging Environment Plugin ===
+Contributors: mattman1c
 Tags: developer, stage, dev
-Requires at least: 2.5
+Requires at least: 2.0.2
 Tested up to: 2.8.6
+Stable tag: trunk
+
+Provides developers with the ability to run separate Dev and Staging environments without having to manually change configuration settings.
+
+== Description ==
 
 Dev and Staging Environment Plugin provides developers with the ability to run separate Dev and Staging environments without having to manually change configuration settings both in the file system and database when migrating between environments.
 
-## Description ##
-
-Dev and Staging Environment Plugin provides developers with the ability to run separate Dev and Staging environments without having to manually change configuration settings both in the file system and database when migrating between environments.
-
-## Installation ##
+== Installation ==
 
 Download the plugin in one of the following formats:
 
-* *Tar* <http://mattheworiordan.com/projects/wp-plugins/dev-stage-environment/dev-stage-environment-0.1.tar>
-
-* *Zip* <http://mattheworiordan.com/projects/wp-plugins/dev-stage-environment/dev-stage-environment-0.1.zip>
+1. Tar - http://mattheworiordan.com/projects/wp-plugins/dev-stage-environment/dev-stage-environment-0.1.tar
+1. Zip - http://mattheworiordan.com/projects/wp-plugins/dev-stage-environment/dev-stage-environment-0.1.zip
 
 Upload the Dev and Staging Environment plugin to your blog in your PRODUCTION environment.  It is imperative you install the plugin in your production environment first.  Then simply activate the plugin.
 
@@ -26,20 +26,18 @@ Please ensure that your web application has both read and write privileges on th
 
 Once you have set up all your settings, you should copy the plugin files along with the wp-config.php file to your Dev and/or Staging environments, and activate the plugin.
 
-## Changelog ##
+== Changelog ==
 
-### 0.1 ###
+= 0.1 =
 
 * First release
 
+== Meta ==
 
-## Meta ##
-
-Written by Matthew O'Riordan, <http://mattheworiordan.com>
+Written by Matthew O'Riordan, http://mattheworiordan.com
 Feedback is welcome, please branch or comment as you wish.
 
-*Github* - <http://github.com/mattheworiordan/Wordpress-Plugin-Dev-and-Stage-Environment>
+1. Github - http://github.com/mattheworiordan/Wordpress-Plugin-Dev-and-Stage-Environment
+1. Home - http://mattheworiordan.com/projects/wp-plugins/dev-stage-environment
 
-*Home* - <http://mattheworiordan.com/projects/wp-plugins/dev-stage-environment>
-
-Released under the GPL License: <http://www.gnu.org/licenses/gpl.html>
+Released under the GPL License: http://www.gnu.org/licenses/gpl.html

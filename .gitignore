@@ -3,3 +3,4 @@
 index.php
 build-and-deploy.sh
 *.svn
+*.tmproj

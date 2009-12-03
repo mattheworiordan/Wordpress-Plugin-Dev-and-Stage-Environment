@@ -14,6 +14,10 @@
 		{
 			$mo_devStageEnvironmentDEV = $devAndStageArrays['DEV'];
 			$mo_devStageEnvironmentSTAGE = $devAndStageArrays['STAGE'];
+			
+			// if for some reason the HOSTS field is not an array, make it an empty one
+			if (!is_array($mo_devStageEnvironmentDEV['HOSTS'])) $mo_devStageEnvironmentDEV['HOSTS'] = array();
+			if (!is_array($mo_devStageEnvironmentSTAGE['HOSTS'])) $mo_devStageEnvironmentSTAGE['HOSTS'] = array();
 		}
 	} catch (Exception $e)
 	{

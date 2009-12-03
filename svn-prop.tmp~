@@ -1,0 +1,5 @@
+build-and-deploy.sh
+*.zip
+*.tar
+index.php
+*.git*

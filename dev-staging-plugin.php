@@ -4,27 +4,35 @@ Plugin Name: Dev and Staging Environment
 Plugin URI: http://mattheworiordan.com/projects/wp-plugins/dev-staging-environment/
 Description: This plugin lets you run your WP site on a DEV or STAGING server without having to change the database connection strings in config files or the Site URL in the database.   It will rewrite all URLs to the local DEV URL if running off localhost, and allow you to specify the local database connection settings.
 Author: Matthew O'Riordan
-Version: 0.1
+Version: 0.2.1
 Author URI: http://mattheworiordan.com/
 */
 
 global $mo_install_pattern, $mo_install_wp_path;
-$mo_install_pattern = "/include\\s\\('wp-content\/plugins\/dev-staging-environment\/wp-config-include.php'\\);\\s/";
+global $mo_pathtothisfile, $mo_pathtothisfolder, $mo_pluginfile;
+
+$mo_pluginfile = preg_replace ("/(?:.*\/)([^\/]+\/[^\/]+)/", "$1", preg_replace ("/\\\/", "/", __file__));
+$mo_pathtothisfile = PLUGINDIR . "/" . $mo_pluginfile;
+$mo_pathtothisfolder = preg_replace (@"/\/[^\/]+$/", "$1", $mo_pathtothisfile);
 $mo_install_wp_path = "wp-config.php";
+
+$mo_install_pattern = "/include\\s\\('" . preg_replace (@"/([\\.\\/\\-])/", @"\\\\" . "$1", $mo_pathtothisfolder) . @"\\/wp\\-config\\-include\\.php'\\);\\s/";
 
 function mo_devStageIncludeInstalled()
 {
 	global $mo_install_pattern, $mo_install_wp_path;
+	
 	$wpconfig = file_get_contents(ABSPATH.$mo_install_wp_path);
 	return (preg_match ($mo_install_pattern, $wpconfig));
 }
 
 // check whenever the plugin is shown that the wp-config file includes the necessary files to change the environment settings
-add_action('after_plugin_row_dev-staging-environment/dev-staging-plugin.php', 'mo_devStageInstallationCheck');
+add_action('after_plugin_row_' . $mo_pluginfile, 'mo_devStageInstallationCheck');
+
 function mo_devStageInstallationCheck() 
 {
 	if (!mo_devStageIncludeInstalled()) { 
-		if ($_REQUEST['install-devstage-plugin'] == 'true') {
+		if ($_REQUEST['install-dev-staging-plugin'] == 'true') {
 			mo_devStageActivate();
 			if (!mo_devStageIncludeInstalled()) mo_devStagInstallationIncorrect(); 
 		} else {
@@ -36,7 +44,7 @@ function mo_devStageInstallationCheck()
 function mo_devStagInstallationIncorrect() {
 	$message_head = "<div class='update-message' style='background-color:#FFEBE8; border:1px solid #FF6666; text-align:left;'>";
 	$top_message_head = "<div class='error' style='padding:3px; background-color:#FFEBE8; border:1px solid #FF6666; text-align:left;'>";
-	$message = "The Dev Staging Environment plugin is not installed correctly.  Please ensure the web server has read and write access to the /wp-config.php file and <a href=\"" . $_SERVER['PHP_SELF'] . "?install-devstaging-plugin=true\">click here to reinstall the plugin</a></div>";
+	$message = "The Dev Staging Environment plugin is not installed correctly.  Please ensure the web server has read and write access to the /wp-config.php file and <a href=\"" . $_SERVER['PHP_SELF'] . "?install-dev-staging-plugin=true\">click here to reinstall the plugin</a></div>";
 	echo '</tr><tr class="plugin-update-tr"><td colspan="5" class="plugin-update">' . $top_message_head . $message . $message_head . $message . '</td></tr>';
 }
 
@@ -45,14 +53,15 @@ register_activation_hook(__FILE__, 'mo_devStageActivate');
 function mo_devStageActivate()
 {
 	global $wpdb;
-	global $mo_install_pattern, $mo_install_wp_path;
+	global $mo_install_pattern, $mo_install_wp_path, $mo_pathtothisfolder;
+	
 	$wpconfig = file_get_contents(ABSPATH.$mo_install_wp_path);
 	
 	if (!preg_match ($mo_install_pattern, $wpconfig)) {
 		$wpconfig = preg_replace ("/\\/\\*+\\s+http:\\/+wordpress.org\\/\\s+\\*+\\//", "/** http://wordpress.org/   **/
 
 // START: Dev Staging Environment Plugin
-include ('wp-content/plugins/dev-staging-environment/wp-config-include.php'); 
+include ('" . $mo_pathtothisfolder . "/wp-config-include.php'); 
 // END: Dev Staging Environment Plugin", $wpconfig);
 		file_put_contents  ( ABSPATH.$mo_install_wp_path, $wpconfig );
 	}
